@@ -1,37 +1,42 @@
 import './css/input.css'
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useState, useEffect} from 'react';
-import { FiMenu } from "react-icons/fi";
-import { FiX } from "react-icons/fi";
-import { FaSearch } from "react-icons/fa";
-
-
-import axios from "axios";
+// import { FiMenu } from "react-icons/fi";
+// import { FiX } from "react-icons/fi";
+// import { FaSearch } from "react-icons/fa";
+import axios from 'axios';
 
 
 
 function IdentitasAnak() {
-    const [open, setOpen] = useState(false);
-    const [open2, setsrc] = useState(false);
-    
-    // const [balita, setBalita] = useState ([]);
+    // const [open, setOpen] = useState(false);
+    // const [open2, setsrc] = useState(false);
+    const [balitas, setBalitas] = useState([]);
 
-    
-    useEffect(()=>{
-        getBalita();
+    useEffect(() => {
+        fetchBalitas(); // Panggil fungsi untuk mengambil data balita saat komponen dimuat pertama kali
     }, []);
 
-    const getBalita = async () => {
-        const response = await axios.get('http://localhost:3000/balita');
-        console.log(response.data);
-    }
+    // Fungsi untuk mengambil data balita dari backend
+    const fetchBalitas = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/balita');
+            setBalitas(response.data.data); // Memperbarui state balitas dengan data balita dari backend
+        } catch (error) {
+            console.error('Error fetching balita:', error);
+        }
+    };
+
     return (
         <>
-            <div className="containerRoot h-full w-full flex flex-row top-0 bg-slate-200 px-2">
+            {/* <div className="containerRoot h-full w-full flex flex-row top-0 bg-slate-200 px-2"> */}
 
                 {/* navigation Start  */}
 
-                <div className={`${open ? "w-48" : "hidden"} h-full sm:left-0 z-10 sm:containerNav sm:w-1/6 sm:h-[100vh] justify-items-center top-0 sm:flex flex-col sm:mr-52 fixed bg-white capitalize`}>
+
+
+
+                {/* <div className={`${open ? "w-48" : "hidden"} h-full sm:left-0 z-10 sm:containerNav sm:w-1/6 sm:h-[100vh] justify-items-center top-0 sm:flex flex-col sm:mr-52 fixed bg-white capitalize`}>
                     <FiX className={`text-slate-600 bottom-0 top-5 right-5 sm:hidden absolute z-10 rounded-full size-5 hover:bg-slate-400 hover:text-white ${!open && "rotate-180"}`} onClick={() => setOpen(!open)} />
                     <div className='img flex justify-center items-center mt-5'>
                         <img src="/img/logoNavbar.png" className='w-[130px] h-[115px]' />
@@ -86,20 +91,28 @@ function IdentitasAnak() {
                             </Link>
                         </li>
                     </div>
-                </div>
+                </div> */}
+
+
                 {/* navigation End  */}
 
 
-                <div className="containerIsi w-full p-4 sm:pl-32 mt-0 sm:mt-10 mb-20 mx-auto sm:ml-52 sm:mr-0">
+                {/* <div className="containerIsi w-full p-4 sm:pl-32 mt-0 sm:mt-10 mb-20 mx-auto sm:ml-52 sm:mr-0"> */}
 
                     {/* top container */}
-                    <div className="containerTop flex flex-row justify-between w-full">
+
+
+                    {/* <div className="containerTop flex flex-row justify-between w-full"> */}
+
+
                         {/* button nav */}
 
-                        <FiMenu className='text-slate-600 top-0 bottom-0 my-auto mr-4 sm:hidden' onClick={() => setOpen(!open)} />
+                        {/* <FiMenu className='text-slate-600 top-0 bottom-0 my-auto mr-4 sm:hidden' onClick={() => setOpen(!open)} /> */}
 
                         {/* button nav end */}
-                        <h1 className="sm:text-4xl text-2xl font-bold mr-auto my-auto">
+
+
+                        {/* <h1 className="sm:text-4xl text-2xl font-bold mr-auto my-auto">
                             Database
                         </h1>
                         <div className="containerInput mr-5 my-auto justify-center items-center flex">
@@ -114,11 +127,37 @@ function IdentitasAnak() {
                                 <img src="/img/imgDashboard/Female Profile.png" alt="" className="w-[40px] h-[40px] " />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
+
+
                     {/* Top container end*/}
 
                     {/* content */}
-                    <div className='content-center mt-20 w-full '>
+                    <table className='border-collapse border border-slate-500 p-10 '>
+                        
+                        <tr>
+                            <th className='border border-slate-600'>id balita</th>
+                            <th className='border border-slate-600'>id user</th>
+                            <th className='border border-slate-600'>nama</th>
+                            <th className='border border-slate-600'>nik</th>
+                            <th className='border border-slate-600'>gender</th>
+                            <th className='border border-slate-600'>bdate</th>
+                            <th className='border border-slate-600'>bloc</th>
+                            <th className='border border-slate-600'>blood</th>
+                        </tr>
+                        {balitas.map((balita) => (
+                        <tr key={balita.id_balita}>
+                            <td>{balita.id_balita}</td>
+                            <td>{balita.nama}</td>
+                            <td>{balita.nik}</td>
+                            <td>{balita.gender}</td>
+                            <td>{balita.birth_date}</td>
+                            <td>{balita.birth_location}</td>
+                            <td>{balita.blood_type}</td>
+                        </tr>
+                    ))}
+                    </table>
+                    {/* <div className='content-center mt-20 w-full '>
                         <div className=" rounded sm:overflow-hidden shadow-lg w-full sm:max-w-xl m-auto bg-white py-5 rounded-b-3xl rounded-t-3xl">
                             <div className="font-bold text-4xl my-5 text-center text-blue-600">Identitas Anak</div>
                             <table className='table-auto  w-full sm:m-auto border-separate border-spacing-5  left-0'>
@@ -158,15 +197,15 @@ function IdentitasAnak() {
 
                         </div>
                     </div>
-                    <button className='bg-blue-900 text-white px-3 py-3 mt-5 rounded-t-xl rounded-b-xl float-right'>Riwayat Pengecekan</button>
+                    <button className='bg-blue-900 text-white px-3 py-3 mt-5 rounded-t-xl rounded-b-xl float-right'>Riwayat Pengecekan</button> */}
                     {/* content end */}
-                </div>
-            </div>
+                {/* </div> */}
+            {/* </div> */}
 
             {/* footer */}
-            <div className=" h-[6.3vh] w-full bg-[#0b598a] bottom-0 left-0 fixed flex justify-center items-center z-20">
-                <p className='text-slate-50'>2024 copyright PEKA.com</p>
-            </div>
+            {/* // <div className=" h-[6.3vh] w-full bg-[#0b598a] bottom-0 left-0 fixed flex justify-center items-center z-20">
+            //     <p className='text-slate-50'>2024 copyright PEKA.com</p>
+            // </div> */}
             {/* footerend*/}
 
         </>
